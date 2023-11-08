@@ -54,6 +54,8 @@ def gradient_descent(A, b, x0, alpha, tol, max_iterations):
 
 # 执行梯度下降法
 x_opt = gradient_descent(A, b, x0, alpha, tolerance, max_iterations)
+
+# 绘图
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 2, 1)
 ax1.plot(f_xk)
