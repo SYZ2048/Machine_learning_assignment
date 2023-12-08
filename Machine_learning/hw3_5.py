@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 """
 @Project ：Machine_learning_assignment 
-@File    ：hw3-5.py
+@File    ：hw3_5.py
 @IDE     ：PyCharm 
 @Author  ：SYZ
 @Date    ：2023/12/7 21:29
