@@ -1,45 +1,28 @@
 import numpy as np
 
-np.random.seed(10)
-m, n = 60, 80
-# A = np.random.randn(m, n)
-A = np.array([[3, 2, 0], [2, 2, 0], [2, 1, 0]])
-m, n = A.shape
-b = np.random.randn(m)
 
-# 迭代的参数
-ITER_para = 1000; Tol = 1e-8; lR = 1e-3
-# 回溯直线搜索的参数
-gamma = 0.5; alpha = 0.05;
-# 初始值
-x = np.zeros((n,))
+def perform_random_walk(steps):
+    """执行指定步数的随机漫步，并返回终点位置"""
+    walk = np.random.choice([-1, 1], size=steps)
+    return np.sum(walk)
 
-#目标函数f(x)
-f_x_ = lambda x: - np.sum(np.log(1 - A @ x)) - np.sum(np.log(1 - np.square(x)))
-#目标函数一阶导
-grad = lambda x: np.sum(A / (1 - A @ x)[:, None], axis=0) + 2 * x / (1 - np.square(x))
 
-#目标函数二阶导
-def d2fx(x: np.ndarray) -> np.ndarray:
-    grad2 = A.T @ np.diag(1 / np.square(1 - A @ x)) @ A
-    grad2 += np.diag((2*np.square(x)+2) / np.square(1-np.square(x)))
-    return grad2
+def analyze_random_walks(num_steps, num_walks):
+    """分析指定步数和模拟次数的随机漫步"""
+    endpoints = [perform_random_walk(num_steps) for _ in range(num_walks)]
+    # 终点的平均位置
+    avg_position = np.mean(endpoints)
+    # 回到原点的概率
+    return_to_origin_prob = np.sum(np.array(endpoints) == 0) / num_walks
+    # 终点离原点的平均距离
+    avg_distance = np.mean(np.abs(endpoints))
+    return avg_position, return_to_origin_prob, avg_distance
 
-# 一些监督训练集的变量
-x = np.zeros((n, ))
-xprev = x; logger = []; x_path = []
-for iter in range(ITER_para):
-    dfdx = grad(x)
-    move = - np.linalg.solve(d2fx(x), dfdx)
-# 令t=1
-    t = 1
-    while f_x_(x + t * move) > f_x_(x) + alpha * t * dfdx @ move:
-        t = t * gamma
 
-    x = x + t * move
-    if np.linalg.norm(xprev - x) < Tol: break
-    xprev = x
+# 设定漫步步数和模拟次数
+steps_list = [50, 100, 200, 500, 1000]
+num_walks = 10000
 
-result = f_x_(x)
-print(x)
-print(result)
+# 分析每个步数的随机漫步
+results = {steps: analyze_random_walks(steps, num_walks) for steps in steps_list}
+results

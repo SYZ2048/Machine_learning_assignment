@@ -2,9 +2,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 # 给定的矩阵 A 和向量 b
-A = np.array([[3, 2, 2], [2, 2, 1], [2, 1, 3]])
+A = np.array([[3, 2, 2], [2, 2, 1], [2, 1, 2]])
 # A = np.array([[3, 2, 1], [2, 3, 1], [1, 1, 2]])
 b = np.array([1, 2, 3])
+
 
 # 计算最优解 x_opt np.linalg.inv: A^-1
 x_opt = np.linalg.inv(A) @ (b / 2)

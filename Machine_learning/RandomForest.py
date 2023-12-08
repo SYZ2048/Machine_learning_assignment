@@ -25,8 +25,8 @@ X_train, X_val, y_train, y_val = train_test_split(
 
 # 初始化分类器
 random_forest_clf = RandomForestClassifier(n_estimators=100, random_state=42)
-# svm_clf = LinearSVC(max_iter=100, tol=20, random_state=42)
-svm_clf = SVC(kernel='linear', probability=True, random_state=42)
+svm_clf = LinearSVC(max_iter=100, tol=20, random_state=42)
+# svm_clf = SVC(kernel='linear', probability=True, random_state=42)
 lda_clf = LinearDiscriminantAnalysis()
 
 # 训练分类器
@@ -40,7 +40,7 @@ svm_val_accuracy = accuracy_score(y_val, svm_clf.predict(X_val))
 lda_val_accuracy = accuracy_score(y_val, lda_clf.predict(X_val))
 # 打印准确率
 print(f"Random Forest validation accuracy: {rf_val_accuracy}")
-print(f"SVM validation accuracy: {svm_val_accuracy}")
+# print(f"SVM validation accuracy: {svm_val_accuracy}")
 print(f"LDA validation accuracy: {lda_val_accuracy}")
 
 # 创建投票分类器
