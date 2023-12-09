@@ -127,25 +127,36 @@ def diff_datasets():
     # 原始数据集
     # {0: 5923, 1: 6742, 2: 5958, 3: 6131, 4: 5842, 5: 5421, 6: 5918, 7: 6265, 8: 5851, 9: 5949}
     # 创建不平衡的训练数据集
-    indices_class_1 = np.where(y_train == 1)[0][:1]  # 类别1的1个样本
-    indices_class_2 = np.where(y_train == 2)[0][:1]  # 类别2的1个样本
-    # indices_class_3 = np.where(y_train == 3)[0][:1]  # 类别3的10个样本
-    # indices_class_4 = np.where(y_train == 4)[0][:1]  # 类别4的10个样本
-    # indices_class_5 = np.where(y_train == 5)[0][:1]  # 类别5的10个样本
-    # 获取其他类别的索引
-    indices_other_classes = \
-    np.where((y_train != 1) & (y_train != 2))[0]
+    indices_class_1 = np.where(y_train == 1)[0][:1000]  # 类别1的1000个样本
+    indices_class_1_imbalance = np.where(y_train == 1)[0][:1990]  # 类别1的1990个样本
+    indices_class_2 = np.where(y_train == 2)[0][:1000]  # 类别2的1000个样本
+    indices_class_2_imbalance = np.where(y_train == 2)[0][:10]  # 类别2的10个样本
+    indices_class_3 = np.where(y_train == 3)[0][:1000]  # 类别3的1000个样本
+    indices_class_4 = np.where(y_train == 4)[0][:1000]  # 类别4的1000个样本
+    indices_class_5 = np.where(y_train == 5)[0][:1000]  # 类别5的1000个样本
+    indices_class_6 = np.where(y_train == 6)[0][:1000]  # 类别6的1000个样本
+    indices_class_7 = np.where(y_train == 7)[0][:1000]  # 类别7的1000个样本
+    indices_class_8 = np.where(y_train == 8)[0][:1000]  # 类别8的1000个样本
+    indices_class_9 = np.where(y_train == 9)[0][:1000]  # 类别9的1000个样本
+    indices_class_0 = np.where(y_train == 0)[0][:1000]  # 类别0的1000个样本
+    # # 获取其他类别的索引
+    # indices_other_classes = \
+    #     np.where((y_train != 1) & (y_train != 2))[0]
     # 合并索引
     balanced_indices = np.concatenate(
-        [indices_class_1, indices_class_2, indices_other_classes])
-    # # 合并索引
-    # balanced_indices = np.concatenate(
-    #     [indices_class_6, indices_class_7, indices_class_8, indices_class_9, indices_class_0, indices_other_classes])
+        [indices_class_1, indices_class_2, indices_class_3, indices_class_4, indices_class_5, indices_class_6,
+         indices_class_7, indices_class_8, indices_class_9, indices_class_0])
+    imbalanced_indices = np.concatenate(
+        [indices_class_1_imbalance, indices_class_2_imbalance, indices_class_3, indices_class_4, indices_class_5, indices_class_6,
+         indices_class_7, indices_class_8, indices_class_9, indices_class_0])
 
     X_train_balanced = X_train[balanced_indices]
     y_train_balanced = y_train[balanced_indices]
+    X_train_imbalanced = X_train[imbalanced_indices]
+    y_train_imbalanced = y_train[imbalanced_indices]
+
     for size in test_sizes:
-        acc = train_model_diff_data(X_train, y_train, X_train_balanced, y_train_balanced, test_size=size)
+        acc = train_model_diff_data(X_train_balanced, y_train_balanced, X_train_imbalanced, y_train_imbalanced, test_size=size)
         accuracies_datasets.append(acc)
     # 绘制准确率曲线
     plt.subplot(1, 1, 1)
