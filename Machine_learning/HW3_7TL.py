@@ -114,3 +114,4 @@ history = model_B_on_A.fit(X_train_B, y_train_B, epochs=16, validation_data=(X_v
 Loss_model_B_on_A, Accuracy_model_B_on_A = model_B_on_A.evaluate(X_test_B, y_test_B)
 print("Loss_model_B_on_A: ", Loss_model_B_on_A)
 print("Accuracy_model_B_on_A: ", Accuracy_model_B_on_A)
+
