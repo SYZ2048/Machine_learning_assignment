@@ -15,6 +15,9 @@ from tensorflow import keras
 from sklearn.model_selection import train_test_split
 import numpy as np
 import matplotlib.pyplot as plt
+from tensorflow.keras.layers import Conv2D, MaxPooling2D
+from tensorflow.keras.layers import Flatten, Dense
+from tensorflow.keras.models import Sequential
 
 # 定义不同的神经元数量配置，
 neuron_numbers = [32, 64, 128, 256, 512]
@@ -169,6 +172,51 @@ def diff_datasets():
     plt.show()
 
 
-diff_test_size()
-# diff_neuron()
-diff_datasets()
+def diff_model():
+    # 创建全连接模型
+    model_dense = Sequential([
+        Flatten(input_shape=(28, 28)),
+        Dense(64, activation='relu'),
+        Dense(10, activation='softmax')
+    ])
+
+    # 编译模型
+    model_dense.compile(optimizer='adam',
+                        loss='sparse_categorical_crossentropy',
+                        metrics=['accuracy'])
+
+    # 训练模型
+    model_dense.fit(X_train, y_train, epochs=5)
+
+    # 评估模型
+    test_loss, test_accuracy = model_dense.evaluate(X_test, y_test)
+    print(f"Dense Network - Loss: {test_loss}, Accuracy: {test_accuracy}")
+
+    # 创建CNN模型
+    model_cnn = Sequential([
+        Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+        MaxPooling2D((2, 2)),
+        Flatten(),
+        Dense(64, activation='relu'),
+        Dense(10, activation='softmax')
+    ])
+
+    # 编译模型
+    model_cnn.compile(optimizer='adam',
+                      loss='sparse_categorical_crossentropy',
+                      metrics=['accuracy'])
+
+    # 训练模型
+    # 注意：需要增加一个维度来表示通道数
+    model_cnn.fit(X_train[..., np.newaxis], y_train, epochs=5)
+
+    # 评估模型
+    test_loss, test_accuracy = model_cnn.evaluate(X_test[..., np.newaxis], y_test)
+    print(f"CNN - Loss: {test_loss}, Accuracy: {test_accuracy}")
+
+
+if __name__ == '__main__':
+    diff_test_size()
+    diff_neuron()
+    diff_datasets()
+    diff_model()
